@@ -23,6 +23,6 @@ Supported platforms are:
 
 **You can also specify JetBrains Runtime version and build by using --build-arg flag:**
 
-    docker buildx build --build-arg JBRVERSION=21.0.6 --build-arg ARG JBRBUILD=872.80 --platform linux/amd64 -t redfoxrr/jbr:latest .
+    docker buildx build --build-arg JBRVERSION=21.0.6 --build-arg JBRBUILD=872.80 --platform linux/amd64 -t redfoxrr/jbr:latest .
 
 You can find version and build values from: [JetBrains Runtime GitHub Releases](https://github.com/JetBrains/JetBrainsRuntime/releases)
