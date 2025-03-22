@@ -5,7 +5,7 @@ LABEL maintainer="RedFox <contact@redfox.tr>"
 ARG TARGETARCH
 
 ARG JBRVERSION=21.0.6
-ARG JBRBUILD=872.80
+ARG JBRBUILD=895.97
 
 RUN apk add --no-cache bash
 
