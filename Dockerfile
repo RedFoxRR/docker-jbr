@@ -8,6 +8,7 @@ ARG JBRVERSION=21.0.8
 ARG JBRBUILD=1038.71
 
 ARG HOTSWAPAGENT=true
+ARG HOTSWAPAGENTVERSION=2.0.2
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -30,7 +31,8 @@ RUN case "${TARGETARCH}" in \
 
 RUN if [ "$HOTSWAPAGENT" = "true" ] ; then \
         mkdir -p /usr/lib/jvm/jbr-${JBRVERSION}/lib/hotswap && \
-        curl -L "https://github.com/HotswapProjects/HotswapAgent/releases/download/RELEASE-2.0.1/hotswap-agent-2.0.1.jar" -o /usr/lib/jvm/jbr-${JBRVERSION}/lib/hotswap/hotswap-agent.jar ; \
+        curl -L "https://repo1.maven.org/maven2/org/hotswapagent/hotswap-agent/${HOTSWAPAGENTVERSION}/hotswap-agent-${HOTSWAPAGENTVERSION}.jar" -o /usr/lib/jvm/jbr-${JBRVERSION}/lib/hotswap/hotswap-agent.jar && \
+        curl -L "https://repo1.maven.org/maven2/org/hotswapagent/hotswap-agent-core/${HOTSWAPAGENTVERSION}/hotswap-agent-core-${HOTSWAPAGENTVERSION}.jar" -o /usr/lib/jvm/jbr-${JBRVERSION}/lib/hotswap/hotswap-agent-core.jar ; \
     fi
 
 ENV JAVA_HOME=/usr/lib/jvm/jbr-${JBRVERSION}
