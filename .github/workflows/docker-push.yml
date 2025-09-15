@@ -19,22 +19,23 @@ jobs:
     strategy:
       matrix:
         include:
-          - tags: ${{ secrets.DOCKER_USERNAME }}/jbr:17
+          - tag: 17
             build-args: |
               JBRVERSION=17.0.14
               JBRBUILD=1367.22
               HOTSWAPAGENT: false
-          - tags: ${{ secrets.DOCKER_USERNAME }}/jbr:17-ha
+          - tag: 17-ha
             build-args: |
               JBRVERSION=17.0.14
               JBRBUILD=1367.22
               HOTSWAPAGENT: true
-          - tags: ${{ secrets.DOCKER_USERNAME }}/jbr:21
+          - tag: 21
             build-args: |
               HOTSWAPAGENT: false
-          - tags: |
-              ${{ secrets.DOCKER_USERNAME }}/jbr:21-ha
-              ${{ secrets.DOCKER_USERNAME }}/jbr:latest
+          - tag: 21-ha
+            build-args: |
+              HOTSWAPAGENT: true
+          - tag: latest
             build-args: |
               HOTSWAPAGENT: true
 
@@ -60,5 +61,5 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ matrix.tags }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/jbr:${{ matrix.tag }}
           build-args: ${{ matrix.build-args }}
