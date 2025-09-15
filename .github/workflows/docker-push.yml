@@ -16,6 +16,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        include:
+          - tags: ${{ secrets.DOCKER_USERNAME }}/jbr:17
+            build-args: |
+              JBRVERSION=17.0.14
+              JBRBUILD=1367.22
+              HOTSWAPAGENT: false
+          - tags: ${{ secrets.DOCKER_USERNAME }}/jbr:17-ha
+            build-args: |
+              JBRVERSION=17.0.14
+              JBRBUILD=1367.22
+              HOTSWAPAGENT: true
+          - tags: ${{ secrets.DOCKER_USERNAME }}/jbr:21
+            build-args: |
+              HOTSWAPAGENT: false
+          - tags: |
+              ${{ secrets.DOCKER_USERNAME }}/jbr:21-ha
+              ${{ secrets.DOCKER_USERNAME }}/jbr:latest
+            build-args: |
+              HOTSWAPAGENT: true
+
     steps:
 
       - name: Checkout code
@@ -38,33 +60,5 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/jbr:${{ matrix.tag }}
-          build-args:
-            JBRVERSION: 17.0.14
-            JBRBUILD: 1367.22
-            HOTSWAPAGENT: ${{ matrix.hotswap }}
-        strategy:
-          matrix:
-            include:
-              - tag: 17
-                hotswap: false
-              - tag: 17-ha
-                hotswap: true
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          push: true
           tags: ${{ matrix.tags }}
-          build-args:
-            HOTSWAPAGENT: ${{ matrix.hotswap }}
-        strategy:
-          matrix:
-            include:
-              - tags: ${{ secrets.DOCKER_USERNAME }}/jbr:21
-                hotswap: false
-              - tags: |
-                  ${{ secrets.DOCKER_USERNAME }}/jbr:21-ha
-                  ${{ secrets.DOCKER_USERNAME }}/jbr:latest
-                hotswap: true
+          build-args: ${{ matrix.build-args }}
